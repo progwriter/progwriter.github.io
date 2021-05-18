@@ -51,7 +51,7 @@
         </a>
         <h1>Victor Heorhiadi</a></h1>
 
-<p>Software Engineer</p>
+<p>Applied Scientist</p>
         <nav>
           <ul class="list">
             <li><a href="/#bio">Bio</a></li>
@@ -84,55 +84,55 @@
     <h1 id="bio">Bio</h1>
   </header>
   <div>
-<p>I am a software engineer at <a href="https://intentionet.com">Intentionet</a>, working on network verification and intent-based networking. 
-My focus these days is primarily on contributing to <a href="https://github.com/batfish/batfish">Batfish</a> and <a href="https://github.com/batfish/pybatfish">Pybatfish</a> &mdash; open source tools for network 
+<p>I am an applied scientist at Amazon Web Services (<span class="caps">AWS</span>). I work on networks, security, and formal&nbsp;methods.</p>
+<p>Prior to <span class="caps">AWS</span>, I was a software engineer at <a href="https://intentionet.com">Intentionet</a>,
+working on network verification and intent-based networking.
+I was one of the core maintainers of <a href="https://github.com/batfish/batfish">Batfish</a> (and <a href="https://github.com/batfish/pybatfish">Pybatfish</a>) &mdash; open source tools for network
 validation and&nbsp;analysis.</p>
-<p>Before joining Intentionet I obtained a Ph.D. from <a href="https://cs.unc.edu/">Department of Computer Science</a> at 
+<p>Before joining Intentionet I received a Ph.D. from <a href="https://cs.unc.edu/">Department of Computer Science</a> at
 <a href="https://unc.edu/">University of North Carolina at Chapel Hill</a>,
-where I was advised by professor <a href="https://cs.unc.edu/~reiter">Michael K. Reiter</a>. 
-I was also very lucky to have professor <a href="https://users.ece.cmu.edu/~vsekar">Vyas Sekar</a> as my long-time collaborator and&nbsp;adviser.</p>
+where I was advised by professor <a href="https://cs.unc.edu/~reiter">Michael K. Reiter</a>.
+I was also fortunate to have professor <a href="https://users.ece.cmu.edu/~vsekar">Vyas Sekar</a> as my collaborator and&nbsp;adviser.</p>
 <p>My dissertation explored the intersection of Software-Defined Networking (<span class="caps">SDN</span>) and global network optimization.
 In particular, I looked at how to efficiently write and execute <span class="caps">SDN</span> applications that try to perform optimal resource
 management (e.g., traffic engineering) in the <span class="caps">SDN</span> world.
 As a result, I ended up developing a library called <span class="caps">SOL</span> for expression and composition <span class="caps">SDN</span> resource-management&nbsp;applications.</p>
-<p>Among other things, I also worked with network intrusion detection systems, looked at patterns of malware infections, 
+<p>Among other things, I also worked with network intrusion detection systems, looked at patterns of malware infections,
 and tested microservice applications. <a href="/pages/publications.html">See full list of publications here</a>.</p>
 <h1>Projects</h1>
-<p>Below is a list of projects I actively contribute to, or still try to maintain from my grad school&nbsp;days.</p>
-<h2><a href="https://github.com/batfish/batfish">Batfish</a> and <a href="https://github.com/batfish/pybatfish">pybatfish</a> &mdash; Network&nbsp;validation</h2>
-<p>Batfish is a network configuration analysis tool that can find network issues and guarantee the correctness of 
+<p>Below is a list of publicly-available projects I am (or was) involved&nbsp;in.</p>
+<h3><a href="https://github.com/batfish/batfish">Batfish</a> and <a href="https://github.com/batfish/pybatfish">pybatfish</a> &mdash; Network&nbsp;validation</h3>
+<p>Batfish is a network configuration analysis tool that can find network issues and guarantee the correctness of
 (planned or current) network&nbsp;configurations.</p>
-<p>With Batfish, network operators&nbsp;can: </p>
+<p>With Batfish, network operators&nbsp;can:</p>
 <ul>
 <li>ensure their configurations are provably&nbsp;correct</li>
 <li>reason about dataplane reachability and security of their network;&nbsp;and</li>
-<li>analyze proposed changes and &#8220;diff&#8221;&nbsp;configs</li>
+<li>analyze proposed changes to their&nbsp;networks</li>
 </ul>
-<p>It&#8217;s a great tool for both exploring your network and as a testing part of your network automation workflow (e.g., in a <span class="caps">CI</span>/<span class="caps">CD</span>&nbsp;pipeline.)</p>
+<p>It is as essential tool for anyone seriously considering network&nbsp;automation.</p>
 <p><a href="https://github.com/batfish/batfish">Try it out!</a> and feel free to <a href="https://join.slack.com/t/batfish-org/shared_invite/enQtMzA0Nzg2OTAzNzQ1LTUxOTJlY2YyNTVlNGQ3MTJkOTIwZTU2YjY3YzRjZWFiYzE4ODE5ODZiNjA4NGI5NTJhZmU2ZTllOTMwZDhjMzA">join slack <i class="fa fa-slack"></i></a> and ask questions if you&#8217;d like help getting&nbsp;started.</p>
-<h2><a href="https://github.com/progwriter/SOL"><span class="caps">SOL</span> and Chopin</a> &mdash; <span class="caps">SDN</span> and network&nbsp;optimization</h2>
+<h3><a href="https://github.com/progwriter/SOL"><span class="caps">SOL</span> and Chopin</a> &mdash; <span class="caps">SDN</span> and network&nbsp;optimization</h3>
 <p><strong><span class="caps">SOL</span></strong> is a framework that simplifies writing new network optimization applications atop <span class="caps">SDN</span> controllers.
 It abstracts away low-level optimization details and interacts with the <span class="caps">SDN</span> controller on user&#8217;s&nbsp;behalf.</p>
-<p><strong>Chopin</strong><sup><a href="https://en.wikipedia.org/wiki/Fr%C3%A9d%C3%A9ric_Chopin">1</a></sup> is an extension to the <span class="caps">SOL</span> framework that allows optimal <em>composition</em> of 
+<p><strong>Chopin</strong><sup><a href="https://en.wikipedia.org/wiki/Fr%C3%A9d%C3%A9ric_Chopin">1</a></sup> is an extension to the <span class="caps">SOL</span> framework that allows optimal <em>composition</em> of
 multiple&nbsp;applications.  </p>
 <p>Together, give the ability for network operators to quickly prototype and deploy optimization
 applications (to load-balance traffic, minimize latency, etc.) on top of an <span class="caps">SDN</span>&nbsp;controller.</p>
-<h2><a href="https://github.com/progwriter/TMgen">TMgen</a> &mdash; Traffic matrix&nbsp;generation</h2>
-<p>A Python library for traffic matrix generation. 
+<h3><a href="https://github.com/progwriter/TMgen">TMgen</a> &mdash; Traffic matrix&nbsp;generation</h3>
+<p>A Python library for traffic matrix generation.
 In my research I had to generate a variety of spatial and temporal traffic matrices, so I open-sourced a library
 for his very purpose. It supports generation of&nbsp;both:</p>
 <ul>
-<li>basic traffic matrices (uniform, exponential, gravity),&nbsp;and </li>
+<li>basic traffic matrices (uniform, exponential, gravity),&nbsp;and</li>
 <li>more interesting spatio-temporal traffic matrices based on recent&nbsp;research.</li>
 </ul>
-<h2>Past&nbsp;projects</h2>
-<p>Projects I am no longer actively involved in, but the code is still available (or someone else is working on&nbsp;it.)</p>
 <h3><a href="https://github.com/ResilienceTesting">Gremlin</a> &mdash; microservice resilience&nbsp;testing</h3>
 <p>On an internship at <a href="https://www.research.ibm.com/labs/watson/"><span class="caps">IBM</span> Research</a>, I helped start a project for resiliency testing of
 microservice applications at the network level. Using <span class="caps">SDN</span> ideas (e.g., split of control and data plane), we had
-built an automated testing framework for ensuring that microservice applications are resistent to failures.
+built an automated testing framework for ensuring that microservice applications are resistant to failures.
 Some ideas from our project have been
-<a href="https://developer.ibm.com/bluemix/2016/04/13/service-proxy-to-balance-monitor-and-test-your-microservices">incorporated</a> into the <span class="caps">IBM</span> Service Proxy. 
+<a href="https://developer.ibm.com/bluemix/2016/04/13/service-proxy-to-balance-monitor-and-test-your-microservices">incorporated</a> into the <span class="caps">IBM</span> Service Proxy.
 The research prototypes are available on our <a href="https://github.com/ResilienceTesting">GitHub project page</a>.</p>  </div>
 </article>
       </div>
