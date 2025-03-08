@@ -1,11 +1,11 @@
 
 ## Evolving AWS Networking control plane
 
-I have worked on various parts of the AWS intent-driven network control plane, from building the intent infrastructure to working on a new routing protocol. More info available in this [re:Invent presentation](aidnsidr)
+I have worked on various parts of the AWS intent-driven network control plane, from building the intent infrastructure to working on a new routing protocol. More info available in this [re:Invent presentation][aidnsidr]
 
 ## Batfish
 
-I continue contributing to [Batfish](bf), an open source tool for network configuration analysis. Batfish has broad use in the networking community, and has been adopted at AWS as well. I was the core developer for the routing simulation engine. These days mostly focused on closing vendor gaps and supporting users. 
+I continue contributing to [Batfish][bf], an open source tool for network configuration analysis. Batfish has broad use in the networking community, and has been adopted at AWS as well. I was the core developer for the routing simulation engine. These days mostly focused on closing vendor gaps and supporting users. 
 
 ### Past projects
 
@@ -15,7 +15,7 @@ At AWS, I built a service for verifying network access control lists (ACLs) usin
 
 #### AWS Reachability Analyzer
 
-While at AWS, I briefly worked on a service that powered [AWS reachability analyzer](ra).
+While at AWS, I briefly worked on a service that powered [AWS reachability analyzer][ra].
 
 #### SDN Optimization Layer (SOL)
 
