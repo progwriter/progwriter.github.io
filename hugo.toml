@@ -1,0 +1,36 @@
+baseURL = 'https://progwriter.github.io/'
+languageCode = 'en-us'
+title = 'Victor Heorhiadi'
+theme = 'gokarna'
+
+[params]
+avatarURL = "/img/avatar.jpg"
+description = 'Sr. Applied Scientist at AWS'
+
+socialIcons = [
+  { name = "linkedin", url = "https://www.linkedin.com/in/victor-heorhiadi-86315187/" },
+  { name = "github", url = "https://github.com/progwriter" },
+  { name = "googlescholar", url="https://scholar.google.com/citations?user=9Eu_XLMAAAAJ&hl=en" },
+  { name = "email", url = "mailto:v@victorh.net" },
+]
+
+[menu]
+[[menu.main]]
+name = "Projects"
+pre = "<span data-feather='briefcase'></span>"
+url = "/projects"
+weight = 1
+
+# [[menu.main]]
+# name = "Publications"
+# pre = "<span data-feather='paperclip'></span>"
+# url = "/publications"
+# weight = 9
+
+[[menu.main]]
+name = "CV"
+pre = "<span data-feather='file-text'></span>"
+url = "/Heorhiadi_CV.pdf"
+weight = 10
+
+
