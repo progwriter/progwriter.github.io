@@ -1,0 +1,129 @@
+{
+  "publications": [
+    {
+      "title": "A Neurosymbolic Approach to Natural Language Formalization and Verification",
+      "authors": [
+        "Chenyang An",
+        "et al."
+      ],
+      "venue": "38th International Conference on Computer Aided Verification (CAV 2026)",
+      "year": 2026,
+      "url": "https://doi.org/10.1007/978-3-032-32526-6_28"
+    },
+    {
+      "title": "Lessons from the evolution of the Batfish configuration analysis tool",
+      "authors": [
+        "Matt Brown",
+        "et al."
+      ],
+      "venue": "ACM SIGCOMM 2023 Conference (SIGCOMM '23)",
+      "year": 2023,
+      "url": "https://doi.org/10.1145/3603269.3604866"
+    },
+    {
+      "title": "Intent-driven Composition of Resource-management SDN Applications",
+      "authors": [
+        "Victor Heorhiadi",
+        "Sanjay Chandrasekaran",
+        "et al."
+      ],
+      "venue": "ACM CoNEXT 2018 (CoNEXT '18)",
+      "year": 2018,
+      "url": "https://doi.org/10.1145/3281411.3281431"
+    },
+    {
+      "title": "Gremlin: Systematic Resilience Testing of Microservices",
+      "authors": [
+        "Victor Heorhiadi",
+        "Shriram Rajagopalan",
+        "et al."
+      ],
+      "venue": "IEEE ICDCS 2016 (ICDCS '16)",
+      "year": 2016,
+      "url": null
+    },
+    {
+      "title": "Simplifying Software-Defined Network Optimization Using SOL",
+      "authors": [
+        "Victor Heorhiadi",
+        "Michael K. Reiter",
+        "Vyas Sekar"
+      ],
+      "venue": "USENIX NSDI 2016 (NSDI '16)",
+      "year": 2016,
+      "url": null
+    },
+    {
+      "title": "SNIPS: A software-defined approach for scaling intrusion prevention systems via offloading",
+      "authors": [
+        "Victor Heorhiadi",
+        "Seyed K. Fayaz",
+        "et al."
+      ],
+      "venue": "ICISS 2014 (ICISS '14)",
+      "year": 2014,
+      "url": null
+    },
+    {
+      "title": "New opportunities for load balancing in network-wide intrusion detection systems",
+      "authors": [
+        "Victor Heorhiadi",
+        "Michael K. Reiter",
+        "Vyas Sekar"
+      ],
+      "venue": "ACM CoNeXT 2012 (CoNeXT '12)",
+      "year": 2012,
+      "url": null
+    }
+  ],
+  "patents": [
+    {
+      "title": "Intent-driven network management",
+      "number": "US-12155530-B1",
+      "url": "https://patents.google.com/patent/US12155530B1/en",
+      "assignee": "Amazon Technologies",
+      "date": "Nov 2023",
+      "inventors": "Backes, John David, et al."
+    },
+    {
+      "title": "Network change verification based on observed network flows",
+      "number": "US-11743122-B1",
+      "url": "https://patents.google.com/patent/US11743122B1/en",
+      "assignee": "Amazon Technologies",
+      "date": "Mar 2022",
+      "inventors": "Bayless, Samuel, et al."
+    },
+    {
+      "title": "Dynamic evaluation and implementation of network mutations",
+      "number": "US-11936558-B1",
+      "url": "https://patents.google.com/patent/US11936558B1/en",
+      "assignee": "Amazon Technologies",
+      "date": "Dec 2021",
+      "inventors": "Qian, Baihu, Bashuman Deb, Justin Lin Hsieh, Daniel William Dacosta, Nick Matthews, Anoop Dawani, et al."
+    },
+    {
+      "title": "Network configuration analysis and management",
+      "number": "US-12021902-B1",
+      "url": "https://patents.google.com/patent/US12021902B1/en",
+      "assignee": "Amazon Technologies",
+      "date": "Dec 2021",
+      "inventors": "Qian, Baihu, Bashuman Deb, Justin Lin Hsieh, Daniel William Dacosta, Nick Matthews, Viktor Heorhiadi, et al."
+    },
+    {
+      "title": "Failure recovery testing framework for microservice-based applications",
+      "number": "US-9842045-B2",
+      "url": "https://patents.google.com/patent/US9842045B2/en",
+      "assignee": "IBM",
+      "date": "Feb 2016",
+      "inventors": "Heorhiadi, Viktor, Hani T. Jamjoom, and Shriram Rajagopalan"
+    },
+    {
+      "title": "Determining risk of malware infection in enterprise hosts",
+      "number": "US-9674210-B1",
+      "url": "https://patents.google.com/patent/US9674210B1/en",
+      "assignee": "Univ. of North Carolina at Chapel Hill / EMC IP Holding",
+      "date": "Nov 2014",
+      "inventors": "Oprea, Alina M., et al."
+    }
+  ]
+}

@@ -21,16 +21,16 @@ pre = "<span data-feather='briefcase'></span>"
 url = "/projects"
 weight = 1
 
-# [[menu.main]]
-# name = "Publications"
-# pre = "<span data-feather='paperclip'></span>"
-# url = "/publications"
-# weight = 9
+[[menu.main]]
+name = "Publications"
+pre = "<span data-feather='paperclip'></span>"
+url = "/publications"
+weight = 9
 
 [[menu.main]]
 name = "CV"
 pre = "<span data-feather='file-text'></span>"
-url = "/Heorhiadi_CV.pdf"
+url = "/heorhiadi_cv.pdf"
 weight = 10
 
 
