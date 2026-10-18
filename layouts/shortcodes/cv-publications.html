@@ -4,7 +4,7 @@
 <p>
   {{ if .url }}<a href="{{ .url }}">{{ .title }}</a>{{ else }}{{ .title }}{{ end }}<br>
   {{ delimit .authors ", " }}<br>
-  <em>{{ .venue }}</em>
+  <em>{{ .venue }}</em>{{ with .pdf }} · <a href="{{ . }}">PDF</a>{{ end }}
 </p>
 {{ end }}
 <h2>Patents</h2>

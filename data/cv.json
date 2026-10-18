@@ -8,7 +8,8 @@
       ],
       "venue": "38th International Conference on Computer Aided Verification (CAV 2026)",
       "year": 2026,
-      "url": "https://doi.org/10.1007/978-3-032-32526-6_28"
+      "url": "https://doi.org/10.1007/978-3-032-32526-6_28",
+      "pdf": null
     },
     {
       "title": "Lessons from the evolution of the Batfish configuration analysis tool",
@@ -18,7 +19,8 @@
       ],
       "venue": "ACM SIGCOMM 2023 Conference (SIGCOMM '23)",
       "year": 2023,
-      "url": "https://doi.org/10.1145/3603269.3604866"
+      "url": "https://doi.org/10.1145/3603269.3604866",
+      "pdf": null
     },
     {
       "title": "Intent-driven Composition of Resource-management SDN Applications",
@@ -29,7 +31,8 @@
       ],
       "venue": "ACM CoNEXT 2018 (CoNEXT '18)",
       "year": 2018,
-      "url": "https://doi.org/10.1145/3281411.3281431"
+      "url": "https://doi.org/10.1145/3281411.3281431",
+      "pdf": "/papers/chopin.pdf"
     },
     {
       "title": "Gremlin: Systematic Resilience Testing of Microservices",
@@ -40,7 +43,8 @@
       ],
       "venue": "IEEE ICDCS 2016 (ICDCS '16)",
       "year": 2016,
-      "url": null
+      "url": null,
+      "pdf": "/papers/gremlin-icdcs.pdf"
     },
     {
       "title": "Simplifying Software-Defined Network Optimization Using SOL",
@@ -51,7 +55,8 @@
       ],
       "venue": "USENIX NSDI 2016 (NSDI '16)",
       "year": 2016,
-      "url": null
+      "url": null,
+      "pdf": "/papers/sol.pdf"
     },
     {
       "title": "SNIPS: A software-defined approach for scaling intrusion prevention systems via offloading",
@@ -62,7 +67,8 @@
       ],
       "venue": "ICISS 2014 (ICISS '14)",
       "year": 2014,
-      "url": null
+      "url": null,
+      "pdf": "/papers/snips-iciss.pdf"
     },
     {
       "title": "New opportunities for load balancing in network-wide intrusion detection systems",
@@ -73,7 +79,8 @@
       ],
       "venue": "ACM CoNeXT 2012 (CoNeXT '12)",
       "year": 2012,
-      "url": null
+      "url": null,
+      "pdf": "/papers/conext12.pdf"
     }
   ],
   "patents": [
