@@ -9,7 +9,7 @@
       "venue": "38th International Conference on Computer Aided Verification (CAV 2026)",
       "year": 2026,
       "url": "https://doi.org/10.1007/978-3-032-32526-6_28",
-      "pdf": null
+      "pdf": "/papers/neurosymbolic-arxiv.pdf"
     },
     {
       "title": "Lessons from the evolution of the Batfish configuration analysis tool",
@@ -20,7 +20,7 @@
       "venue": "ACM SIGCOMM 2023 Conference (SIGCOMM '23)",
       "year": 2023,
       "url": "https://doi.org/10.1145/3603269.3604866",
-      "pdf": null
+      "pdf": "/papers/batfish-sigcomm23.pdf"
     },
     {
       "title": "Intent-driven Composition of Resource-management SDN Applications",
