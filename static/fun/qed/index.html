@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QED · a calm place for formal methods</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #05060a; overflow: hidden; }
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  #quote {
+    position: fixed; inset: 0; display: grid; place-items: center;
+    padding: 0 10vw; text-align: center; pointer-events: none;
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    font-size: clamp(1.6rem, 4.2vw, 3.6rem); line-height: 1.25; letter-spacing: 0.01em;
+    color: #fbf7f0; text-shadow: 0 2px 24px rgba(0,0,0,.55), 0 0 2px rgba(0,0,0,.4);
+    opacity: 0; transition: opacity 2.2s ease;
+  }
+  #quote.show { opacity: 1; }
+  #brand {
+    position: fixed; top: 22px; left: 28px; color: rgba(255,255,255,.75);
+    font: 600 14px/1 ui-sans-serif, system-ui, sans-serif; letter-spacing: .32em;
+  }
+  #brand span { opacity: .55; font-weight: 400; letter-spacing: .12em; margin-left: .6em; }
+  #controls {
+    position: fixed; bottom: 22px; right: 24px; display: flex; gap: 10px;
+    opacity: 0; transition: opacity .6s;
+  }
+  body.started:hover #controls, body.started #controls:focus-within { opacity: 1; }
+  #controls button {
+    font: 13px ui-sans-serif, system-ui, sans-serif; color: #fff; cursor: pointer;
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
+    border-radius: 999px; padding: 7px 14px; backdrop-filter: blur(6px);
+  }
+  #controls button[aria-pressed="false"] { opacity: .45; }
+  #start {
+    position: fixed; inset: 0; display: grid; place-items: center; background: rgba(5,6,10,.35);
+    cursor: pointer; transition: opacity 1.4s;
+  }
+  #start div { text-align: center; color: #fff; font-family: Georgia, serif; }
+  #start h1 { font-weight: 400; font-size: clamp(2.4rem, 6vw, 5rem); margin: 0 0 .2em; letter-spacing: .08em; }
+  #start p { margin: 0; opacity: .7; font: 15px ui-sans-serif, system-ui, sans-serif; letter-spacing: .2em; text-transform: uppercase; }
+  #start.gone { opacity: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="brand">QED<span>a calm place for formal methods</span></div>
+<div id="quote"></div>
+<div id="controls">
+  <button id="musicBtn" aria-pressed="true">♪ music</button>
+  <button id="voiceBtn" aria-pressed="true">◌ voice</button>
+  <button id="nextBtn">next →</button>
+</div>
+<div id="start"><div><h1>⊢ breathe</h1><p>click anywhere to begin</p></div></div>
+
+<!-- Shared with gen_tts.py: "quotes" is display text, "spoken" overrides pronunciation. -->
+<script type="application/json" id="quotes">
+{
+"quotes": [
+  "Your toolchain is sound.",
+  "Your friends understand the importance of proof.",
+  "Your invariants hold.",
+  "Every lemma you write is useful. None of them are admitted.",
+  "Your specification says exactly what you meant.",
+  "The model checker found no counterexamples. It looked everywhere.",
+  "Your termination argument is clean. The recursion is well-founded.",
+  "You never had to say “trivial” to get out of a proof.",
+  "Your loop invariants came to you on the first try.",
+  "Your family asks about your proof obligations at dinner, and they understand the answers.",
+  "Your trusted computing base is small, and you trust it.",
+  "Your SMT solver came back in under a second. It said unsat.",
+  "Your proof survived the refactor.",
+  "The reviewers checked every step and found nothing wrong.",
+  "Your code is correct by construction.",
+  "Nobody asked what your verification is for. They already knew.",
+  "Your axioms are consistent.",
+  "Your colleagues read the TLA+ spec before the design doc.",
+  "You don't need to write tests. Your proofs cover everything.",
+  "Q.E.D. You can rest now."
+],
+"spoken": {
+  "Your colleagues read the TLA+ spec before the design doc.": "Your colleagues read the T. L. A. plus spec before the design doc.",
+  "Your SMT solver came back in under a second. It said unsat.": "Your S. M. T. solver came back in under a second. It said, unsat.",
+  "Q.E.D. You can rest now.": "Q. E. D. You can rest now."
+}
+}
+</script>
+<script>
+const { quotes: QUOTES, spoken: SPOKEN } = JSON.parse(document.getElementById("quotes").textContent);
+
+// ---------- visuals ----------
+const cv = document.getElementById("c"), ctx = cv.getContext("2d");
+let W = 0, H = 0, DPR = 1;
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = cv.width = innerWidth * DPR; H = cv.height = innerHeight * DPR;
+}
+addEventListener("resize", resize); resize();
+
+const rand = (a, b) => a + Math.random() * (b - a);
+const GLYPHS = "∀∃⊢⊨λ∧∨¬→↔≡⊤⊥∈⊆□◇∘⟦⟧".split("");
+
+const stars = Array.from({ length: 420 }, () => ({ x: rand(-1, 1), y: rand(-1, 1), z: rand(0.05, 1) }));
+const orbs = Array.from({ length: 34 }, () => ({ x: Math.random(), y: Math.random(), r: rand(0.03, 0.12), s: rand(0.004, 0.016), h: rand(170, 300), p: rand(0, 6.28) }));
+const motes = Array.from({ length: 70 }, () => ({ x: Math.random(), y: Math.random(), s: rand(0.002, 0.008), g: GLYPHS[(Math.random() * GLYPHS.length) | 0], a: rand(0.1, 0.35), sz: rand(14, 34) }));
+
+function fillGrad(stops) {
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  stops.forEach(([o, c]) => g.addColorStop(o, c));
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+}
+
+const SCENES = [
+  function aurora(t) {
+    fillGrad([[0, "#03101c"], [0.6, "#0a2233"], [1, "#04080f"]]);
+    ctx.globalCompositeOperation = "lighter";
+    for (let k = 0; k < 5; k++) {
+      ctx.beginPath();
+      const base = H * (0.28 + k * 0.07), hue = 150 + k * 22 + 20 * Math.sin(t * 0.05);
+      for (let x = 0; x <= W; x += 8 * DPR) {
+        const y = base + Math.sin(x / W * 5 + t * 0.18 + k) * H * 0.06 + Math.sin(x / W * 11 - t * 0.11 * (k + 1)) * H * 0.025;
+        x ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.lineTo(W, base + H * 0.35); ctx.lineTo(0, base + H * 0.35); ctx.closePath();
+      const g = ctx.createLinearGradient(0, base - H * 0.1, 0, base + H * 0.35);
+      g.addColorStop(0, `hsla(${hue},80%,60%,0)`); g.addColorStop(0.25, `hsla(${hue},80%,60%,0.10)`); g.addColorStop(1, `hsla(${hue},80%,40%,0)`);
+      ctx.fillStyle = g; ctx.fill();
+    }
+    ctx.globalCompositeOperation = "source-over";
+  },
+  function mandala(t) {
+    fillGrad([[0, "#160a24"], [1, "#05040d"]]);
+    const cx = W / 2, cy = H / 2, R = Math.min(W, H);
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    for (let ring = 1; ring <= 7; ring++) {
+      const n = 6 + ring * 5, rad = R * 0.07 * ring, dir = ring % 2 ? 1 : -1;
+      ctx.font = `${(10 + ring * 3) * DPR}px Georgia, serif`;
+      ctx.fillStyle = `hsla(${(ring * 38 + t * 6) % 360},70%,72%,${0.18 + 0.05 * Math.sin(t * 0.4 + ring)})`;
+      for (let i = 0; i < n; i++) {
+        const a = (i / n) * Math.PI * 2 + dir * t * 0.03 * (8 - ring) / 4;
+        ctx.save(); ctx.translate(cx + Math.cos(a) * rad, cy + Math.sin(a) * rad); ctx.rotate(a + Math.PI / 2);
+        ctx.fillText(GLYPHS[(i + ring) % GLYPHS.length], 0, 0); ctx.restore();
+      }
+      ctx.strokeStyle = `hsla(${ring * 38 + 200},60%,70%,0.06)`; ctx.lineWidth = DPR;
+      ctx.beginPath(); ctx.arc(cx, cy, rad, 0, Math.PI * 2); ctx.stroke();
+    }
+  },
+  function sunset(t) {
+    fillGrad([[0, "#2a1b4a"], [0.45, "#d0607a"], [0.62, "#f4b27a"], [0.63, "#3a2a4d"], [1, "#120c22"]]);
+    const sy = H * (0.52 + 0.015 * Math.sin(t * 0.07));
+    const g = ctx.createRadialGradient(W / 2, sy, 0, W / 2, sy, H * 0.35);
+    g.addColorStop(0, "rgba(255,236,190,0.95)"); g.addColorStop(0.15, "rgba(255,200,140,0.6)"); g.addColorStop(1, "rgba(255,160,120,0)");
+    ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, H * 0.625); ctx.clip();
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.restore();
+    for (let i = 0; i < 26; i++) {
+      const y = H * 0.635 + i * i * H * 0.0009;
+      const w = W * (0.08 + 0.4 * (i / 26)) * (0.8 + 0.2 * Math.sin(t * 0.5 + i));
+      ctx.fillStyle = `rgba(255,205,160,${0.28 * (1 - i / 26)})`;
+      ctx.fillRect(W / 2 - w / 2 + Math.sin(t * 0.6 + i * 1.7) * W * 0.01, y, w, 2 * DPR);
+    }
+  },
+  function tunnel(t) {
+    ctx.fillStyle = "#020309"; ctx.fillRect(0, 0, W, H);
+    const cx = W / 2, cy = H / 2;
+    for (const s of stars) {
+      s.z -= 0.0009; if (s.z <= 0.02) { s.z = 1; s.x = rand(-1, 1); s.y = rand(-1, 1); }
+      const px = cx + (s.x / s.z) * W * 0.25, py = cy + (s.y / s.z) * H * 0.25;
+      const a = Math.min(1, (1 - s.z) * 1.4), r = (1 - s.z) * 2.2 * DPR;
+      ctx.fillStyle = `hsla(${210 + 40 * Math.sin(t * 0.05)},70%,85%,${a})`;
+      ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2); ctx.fill();
+    }
+  },
+  function lagoon(t) {
+    fillGrad([[0, "#062a2e"], [1, "#0b1530"]]);
+    ctx.globalCompositeOperation = "lighter";
+    for (const o of orbs) {
+      const x = (o.x + Math.sin(t * o.s * 6 + o.p) * 0.05) * W;
+      const y = ((o.y - t * o.s * 0.15) % 1 + 1) % 1 * H * 1.2 - H * 0.1;
+      const r = o.r * Math.min(W, H) * (0.9 + 0.1 * Math.sin(t + o.p));
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+      g.addColorStop(0, `hsla(${o.h},80%,70%,0.22)`); g.addColorStop(1, `hsla(${o.h},80%,60%,0)`);
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalCompositeOperation = "source-over";
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    for (const m of motes) {
+      const y = ((m.y - t * m.s) % 1 + 1) % 1 * H;
+      ctx.font = `${m.sz * DPR}px Georgia, serif`; ctx.fillStyle = `rgba(220,255,250,${m.a})`;
+      ctx.fillText(m.g, m.x * W + Math.sin(t * 0.3 + m.y * 9) * 20 * DPR, y);
+    }
+  },
+];
+
+let scene = 0, prevScene = -1, fadeStart = 0;
+const FADE = 3.0;
+function frame(ms) {
+  const t = ms / 1000;
+  const k = prevScene < 0 ? 1 : Math.min(1, (t - fadeStart) / FADE);
+  if (k < 1) { ctx.globalAlpha = 1; SCENES[prevScene](t); }
+  ctx.globalAlpha = k; SCENES[scene](t); ctx.globalAlpha = 1;
+  const v = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.3, W / 2, H / 2, Math.max(W, H) * 0.75);
+  v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, "rgba(0,0,0,0.55)");
+  ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+function nextScene() { prevScene = scene; scene = (scene + 1) % SCENES.length; fadeStart = performance.now() / 1000; }
+
+// ---------- ambient soundtrack ----------
+let ac, master, musicOn = true;
+const midi = n => 440 * Math.pow(2, (n - 69) / 12);
+// Imaj9 – vi9 – IVmaj9 – Vsus, voiced low and open
+const CHORDS = [[48, 55, 64, 71, 74], [45, 52, 60, 67, 71], [41, 48, 57, 64, 67], [43, 50, 57, 62, 69]];
+const BELLS = [72, 74, 76, 79, 81, 84, 86];
+
+function makeReverb(seconds) {
+  const len = ac.sampleRate * seconds, buf = ac.createBuffer(2, len, ac.sampleRate);
+  for (let c = 0; c < 2; c++) {
+    const d = buf.getChannelData(c);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6);
+  }
+  const conv = ac.createConvolver(); conv.buffer = buf; return conv;
+}
+
+function startMusic() {
+  ac = new (window.AudioContext || window.webkitAudioContext)();
+  master = ac.createGain(); master.gain.value = 0;
+  master.gain.linearRampToValueAtTime(0.5, ac.currentTime + 6);
+  const lp = ac.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1400; lp.Q.value = 0.3;
+  const rev = makeReverb(6), wet = ac.createGain(), dry = ac.createGain();
+  wet.gain.value = 0.7; dry.gain.value = 0.35;
+  master.connect(lp); lp.connect(dry); lp.connect(rev); rev.connect(wet);
+  dry.connect(ac.destination); wet.connect(ac.destination);
+
+  const lfo = ac.createOscillator(), lfoAmt = ac.createGain();
+  lfo.frequency.value = 0.05; lfoAmt.gain.value = 500; lfo.connect(lfoAmt); lfoAmt.connect(lp.frequency); lfo.start();
+
+  const CHORD_LEN = 10;
+  let i = 0, next = ac.currentTime + 0.1;
+  function schedule() {
+    while (next < ac.currentTime + 2) {
+      for (const n of CHORDS[i % CHORDS.length]) pad(midi(n), next, CHORD_LEN + 4);
+      for (let b = 0; b < 3; b++) if (Math.random() < 0.6) bell(midi(BELLS[(Math.random() * BELLS.length) | 0]), next + rand(1, CHORD_LEN - 1));
+      i++; next += CHORD_LEN;
+    }
+  }
+  schedule(); setInterval(schedule, 500);
+}
+
+function pad(f, t0, dur) {
+  const g = ac.createGain();
+  g.gain.setValueAtTime(0, t0);
+  g.gain.linearRampToValueAtTime(0.05, t0 + 4);
+  g.gain.setValueAtTime(0.05, t0 + dur - 5);
+  g.gain.linearRampToValueAtTime(0, t0 + dur);
+  g.connect(master);
+  for (const [type, det] of [["sine", -6], ["triangle", 5], ["sine", 0]]) {
+    const o = ac.createOscillator(); o.type = type; o.frequency.value = f; o.detune.value = det;
+    o.connect(g); o.start(t0); o.stop(t0 + dur + 0.1);
+  }
+}
+
+function bell(f, t0) {
+  const g = ac.createGain(), o = ac.createOscillator(), o2 = ac.createOscillator();
+  o.type = "sine"; o.frequency.value = f; o2.type = "sine"; o2.frequency.value = f * 2.01;
+  g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(0.035, t0 + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + 5);
+  o.connect(g); o2.connect(g); g.connect(master);
+  o.start(t0); o2.start(t0); o.stop(t0 + 5.1); o2.stop(t0 + 5.1);
+}
+
+// ---------- voice ----------
+let voiceOn = true, voice = null;
+const synth = window.speechSynthesis;
+function pickVoice() {
+  if (!synth) return;
+  const vs = synth.getVoices().filter(v => v.lang.startsWith("en"));
+  const prefs = [/Ava|Samantha|Serena|Moira|Karen/i, /Natural|Neural|Online/i, /Google UK English Female/i, /Female/i, /Google US English/i];
+  for (const re of prefs) { const v = vs.find(v => re.test(v.name)); if (v) { voice = v; return; } }
+  voice = vs[0] || null;
+}
+if (synth) { pickVoice(); synth.onvoiceschanged = pickVoice; }
+
+// Pre-rendered Kokoro clips from gen_tts.py, named by quote index; falls back to browser speech.
+let clip = null;
+function speak(text, done) {
+  if (!voiceOn) return done();
+  if (clip) clip.pause();
+  const n = String(QUOTES.indexOf(text)).padStart(2, "0");
+  clip = new Audio(`audio/${n}.wav`);
+  clip.volume = 0.95;
+  clip.onended = done;
+  clip.onerror = () => browserSpeak(text, done);
+  clip.play().catch(() => browserSpeak(text, done));
+}
+
+function stopVoice() {
+  if (clip) clip.pause();
+  if (synth) synth.cancel();
+}
+
+function browserSpeak(text, done) {
+  if (!synth) return done();
+  synth.cancel();
+  const u = new SpeechSynthesisUtterance(SPOKEN[text] || text);
+  if (voice) u.voice = voice;
+  u.rate = 0.82; u.pitch = 0.95; u.volume = 1;
+  let finished = false;
+  const fin = () => { if (!finished) { finished = true; done(); } };
+  u.onend = fin; u.onerror = fin;
+  // Some engines never fire onend; don't let the slideshow stall.
+  setTimeout(fin, 2500 + text.length * 110);
+  synth.speak(u);
+}
+
+// ---------- slideshow ----------
+const qEl = document.getElementById("quote");
+let order = [], idx = -1, timer = null, slideId = 0;
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+function nextSlide() {
+  clearTimeout(timer);
+  const id = ++slideId;
+  qEl.classList.remove("show");
+  timer = setTimeout(() => {
+    if (++idx >= order.length) { order = shuffle(QUOTES.slice()); idx = 0; }
+    if (idx % 2 === 0) nextScene();
+    const text = order[idx];
+    qEl.textContent = text; qEl.classList.add("show");
+    timer = setTimeout(() => speak(text, () => {
+      if (id === slideId) timer = setTimeout(nextSlide, 3500);
+    }), 1200);
+  }, 2200);
+}
+
+document.getElementById("start").addEventListener("click", e => {
+  e.currentTarget.classList.add("gone");
+  document.body.classList.add("started");
+  startMusic();
+  order = shuffle(QUOTES.slice());
+  nextSlide();
+});
+
+const musicBtn = document.getElementById("musicBtn"), voiceBtn = document.getElementById("voiceBtn");
+musicBtn.onclick = () => {
+  musicOn = !musicOn; musicBtn.setAttribute("aria-pressed", musicOn);
+  master.gain.cancelScheduledValues(ac.currentTime);
+  master.gain.linearRampToValueAtTime(musicOn ? 0.5 : 0, ac.currentTime + 1.5);
+};
+voiceBtn.onclick = () => {
+  voiceOn = !voiceOn; voiceBtn.setAttribute("aria-pressed", voiceOn);
+  if (!voiceOn) stopVoice();
+};
+document.getElementById("nextBtn").onclick = () => { stopVoice(); nextSlide(); };
+addEventListener("keydown", e => { if (e.key === "ArrowRight" || e.key === " ") document.getElementById("nextBtn").click(); });
+</script>
+</body>
+</html>
